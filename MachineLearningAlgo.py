@@ -84,8 +84,9 @@ ax.set_xticklabels(names)
 plt.show()
 
 # Make predictions on validation dataset using LogisticRegression
-lr = LogisticRegression(solver='liblinear', multi_class='ovr')
-lr.fit(X_train, Y_train)
+# lr = LogisticRegression(solver='liblinear', multi_class='ovr')
+lr = models[0]
+# lr.fit(X_train, Y_train)
 predictionsLR = lr.predict(X_validation)
 print('*****************************LogisticRegression*******************************')
 print('Accuracy Score:')
@@ -124,7 +125,7 @@ print('*****************************END OF KNN*******************************')
 
 
 # Make predictions on validation dataset using DecisionTreeClassifier
-cart = LinearDiscriminantAnalysis()
+cart = DecisionTreeClassifier()
 cart.fit(X_train, Y_train)
 predictionsCART = cart.predict(X_validation)
 print('*****************************DecisionTreeClassifier*******************************')
