@@ -1,7 +1,6 @@
 # Load libraries
 import pandas
 import numpy as np
-
 from pandas.plotting import scatter_matrix
 import matplotlib.pyplot as plt
 from sklearn import model_selection
@@ -41,7 +40,7 @@ dataset.hist()
 plt.show()
 
 # scatter plot matrix
-scatter_matrix(dataset)
+scatter_matrix(dataset, alpha=0.2, figsize=(11, 11))
 plt.show()
 
 # Split-out validation dataset
@@ -64,25 +63,7 @@ models.append(('KNN', KNeighborsClassifier()))
 models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC(gamma='auto')))
-# evaluate each model in turn
-results = []
-names = []
-for name, model in models:
-	kfold = model_selection.KFold(n_splits=10, random_state=seed)
-	cv_results = model_selection.cross_val_score(model, X_train, Y_train, cv=kfold, scoring=scoring)
-	results.append(cv_results)
-	names.append(name)
-	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-	print(msg)
 
-# Spot Check Algorithms
-models = []
-models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
-models.append(('LDA', LinearDiscriminantAnalysis()))
-models.append(('KNN', KNeighborsClassifier()))
-models.append(('CART', DecisionTreeClassifier()))
-models.append(('NB', GaussianNB()))
-models.append(('SVM', SVC(gamma='auto')))
 # evaluate each model in turn
 results = []
 names = []
@@ -102,18 +83,82 @@ plt.boxplot(results)
 ax.set_xticklabels(names)
 plt.show()
 
-# Make predictions on validation dataset
-knn = KNeighborsClassifier()
-knn.fit(X_train, Y_train)
-predictions = knn.predict(X_validation)
-print(accuracy_score(Y_validation, predictions))
-print(confusion_matrix(Y_validation, predictions))
-print(classification_report(Y_validation, predictions))
+# Make predictions on validation dataset using LogisticRegression
+lr = LogisticRegression(solver='liblinear', multi_class='ovr')
+lr.fit(X_train, Y_train)
+predictionsLR = lr.predict(X_validation)
+print('*****************************LogisticRegression*******************************')
+print('Accuracy Score:')
+print(accuracy_score(Y_validation, predictionsLR))
+print('Confusion Matrix: ')
+print(confusion_matrix(Y_validation, predictionsLR))
+print('Classification Report:')
+print(classification_report(Y_validation, predictionsLR))
+print('*******************************END OF LogisticRegression*****************************')
 
-# Make predictions on validation dataset
+# Make predictions on validation dataset using LDA
+lda = LinearDiscriminantAnalysis()
+lda.fit(X_train, Y_train)
+predictionsLDA = lda.predict(X_validation)
+print('*****************************LDA*******************************')
+print('Accuracy Score:')
+print(accuracy_score(Y_validation, predictionsLDA))
+print('Confusion Matrix: ')
+print(confusion_matrix(Y_validation, predictionsLDA))
+print('Classification Report:')
+print(classification_report(Y_validation, predictionsLDA))
+print('*******************************END OF LDA*****************************')
+
+# Make predictions on validation dataset using KNN
 knn = KNeighborsClassifier()
 knn.fit(X_train, Y_train)
 predictions = knn.predict(X_validation)
+print('**************************** KNN ********************************')
+print('Accuracy Score:')
 print(accuracy_score(Y_validation, predictions))
+print('Confusion Matrix: ')
 print(confusion_matrix(Y_validation, predictions))
+print('Classification Report:')
 print(classification_report(Y_validation, predictions))
+print('*****************************END OF KNN*******************************')
+
+
+# Make predictions on validation dataset using DecisionTreeClassifier
+cart = LinearDiscriminantAnalysis()
+cart.fit(X_train, Y_train)
+predictionsCART = cart.predict(X_validation)
+print('*****************************DecisionTreeClassifier*******************************')
+print('Accuracy Score:')
+print(accuracy_score(Y_validation, predictionsCART))
+print('Confusion Matrix: ')
+print(confusion_matrix(Y_validation, predictionsCART))
+print('Classification Report:')
+print(classification_report(Y_validation, predictionsCART))
+print('*******************************END OF DecisionTreeClassifier*****************************')
+
+# Make predictions on validation dataset using Naive Bayes
+nb = GaussianNB()
+nb.fit(X_train, Y_train)
+predictionsNb = nb.predict(X_validation)
+print('*****************************NAIVE BAYES*******************************')
+print('Accuracy Score:')
+print(accuracy_score(Y_validation, predictionsNb))
+print('Confusion Matrix: ')
+print(confusion_matrix(Y_validation, predictionsNb))
+print('Classification Report:')
+print(classification_report(Y_validation, predictionsNb))
+print('*******************************END OF NAIVE BAYES*****************************')
+
+
+# Make predictions on validation dataset using SVC
+svc = SVC(gamma='auto')
+svc.fit(X_train, Y_train)
+predictionsSVC = svc.predict(X_validation)
+print('*****************************SVC*******************************')
+print('Accuracy Score:')
+print(accuracy_score(Y_validation, predictionsSVC))
+print('Confusion Matrix: ')
+print(confusion_matrix(Y_validation, predictionsSVC))
+print('Classification Report:')
+print(classification_report(Y_validation, predictionsSVC))
+print('*******************************END OF SVC*****************************')
